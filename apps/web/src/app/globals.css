@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-sapphire: #0F52BA;
+  --color-brand-azure: #1B7FE3;
+  --color-brand-emerald: #00D68F;
+  --color-brand-jade: #00B87A;
+  --color-brand-midnight: #0F172A;
+  --color-brand-deep: #080E1A;
+
+  --color-surface-0: #060A13;
+  --color-surface-1: #0C1425;
+  --color-surface-2: #111B33;
+  --color-surface-3: #162040;
+  --color-surface-card: #0D1526;
+  --color-surface-hover: #131D35;
+
+  --color-border-subtle: #1A2744;
+  --color-border-default: #243352;
+
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+
+  --color-positive: #00D68F;
+  --color-negative: #F43F5E;
+  --color-warning: #F59E0B;
+
+  --font-display: "Instrument Sans", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-surface-0 text-text-primary antialiased;
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background: rgba(27, 127, 227, 0.3);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface-card/80 backdrop-blur-xl border border-border-subtle rounded-2xl;
+  }
+
+  .glow-border {
+    box-shadow: 0 0 0 1px rgba(27, 127, 227, 0.15), 0 0 20px rgba(27, 127, 227, 0.05);
+  }
+
+  .stat-value {
+    @apply text-3xl font-bold tracking-tight tabular-nums;
+  }
+
+  .stat-label {
+    @apply text-sm text-text-muted font-medium uppercase tracking-wider;
+  }
+
+  .pulse-dot {
+    @apply relative;
+  }
+  .pulse-dot::after {
+    content: "";
+    @apply absolute w-2 h-2 rounded-full bg-brand-emerald;
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(0, 214, 143, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(0, 214, 143, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 214, 143, 0); }
+  }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fade-in-up 0.5s ease-out both;
+  }
+}
