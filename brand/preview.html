@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChiefCFO — Brand Assets Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: Inter, -apple-system, system-ui, sans-serif; 
+      background: #F8FAFC; 
+      color: #0F172A;
+      padding: 40px;
+    }
+    h1 { font-size: 32px; margin-bottom: 8px; }
+    .subtitle { color: #64748B; font-size: 16px; margin-bottom: 48px; }
+    .section { margin-bottom: 48px; }
+    .section h2 { font-size: 20px; color: #334155; margin-bottom: 16px; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card { 
+      background: white; 
+      border-radius: 16px; 
+      padding: 32px; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 16px;
+    }
+    .card.dark { background: #0F172A; }
+    .card img, .card svg { max-width: 100%; height: auto; }
+    .card-label { font-size: 14px; color: #64748B; font-weight: 500; }
+    .card.dark .card-label { color: #94A3B8; }
+    .logo-preview { width: 160px; height: 160px; }
+    .wordmark-preview { width: 100%; max-width: 400px; }
+    .colors { display: flex; gap: 16px; flex-wrap: wrap; }
+    .swatch { 
+      width: 120px; height: 80px; 
+      border-radius: 12px; 
+      display: flex; align-items: flex-end; 
+      padding: 8px 12px; 
+      color: white; font-size: 12px; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .swatch.light-text { color: #0F172A; }
+    .type-sample { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
+    .type-body { font-size: 16px; line-height: 1.6; color: #475569; max-width: 500px; }
+  </style>
+</head>
+<body>
+  <h1>ChiefCFO Brand Assets</h1>
+  <p class="subtitle">Autonomous Financial Intelligence — chiefcfo.ai</p>
+
+  <div class="section">
+    <h2>Logo Variations</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="logo.svg" class="logo-preview" alt="Primary Logo">
+        <span class="card-label">Primary Logo (Light BG)</span>
+      </div>
+      <div class="card dark">
+        <img src="logo.svg" class="logo-preview" alt="Primary Logo Dark">
+        <span class="card-label">Primary Logo (Dark BG)</span>
+      </div>
+      <div class="card">
+        <img src="logo-icon.svg" class="logo-preview" alt="App Icon">
+        <span class="card-label">App Icon / Favicon</span>
+      </div>
+      <div class="card dark">
+        <img src="logo-icon.svg" class="logo-preview" alt="App Icon Dark">
+        <span class="card-label">App Icon (Dark BG)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Wordmark</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="logo-wordmark.svg" class="wordmark-preview" alt="Wordmark">
+        <span class="card-label">Full Wordmark (Light BG)</span>
+      </div>
+      <div class="card dark">
+        <img src="logo-wordmark-dark.svg" class="wordmark-preview" alt="Wordmark Dark">
+        <span class="card-label">Full Wordmark (Dark BG)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Brand Colors</h2>
+    <div class="colors">
+      <div class="swatch" style="background: #0F52BA;">
+        #0F52BA<br>Sapphire
+      </div>
+      <div class="swatch" style="background: #1B7FE3;">
+        #1B7FE3<br>Azure
+      </div>
+      <div class="swatch" style="background: #00D68F;">
+        #00D68F<br>Emerald
+      </div>
+      <div class="swatch" style="background: #00B87A;">
+        #00B87A<br>Jade
+      </div>
+      <div class="swatch" style="background: #0F172A;">
+        #0F172A<br>Midnight
+      </div>
+      <div class="swatch light-text" style="background: #F8FAFC;">
+        #F8FAFC<br>Cloud
+      </div>
+      <div class="swatch light-text" style="background: #E2E8F0;">
+        #E2E8F0<br>Slate 200
+      </div>
+      <div class="swatch" style="background: #64748B;">
+        #64748B<br>Slate 500
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Typography</h2>
+    <div class="card" style="align-items: flex-start; max-width: 600px;">
+      <div>
+        <div class="type-sample">Inter Bold</div>
+        <div class="type-body">
+          Your burn rate is $287K/mo but you think it's $240K — you're missing $47K in accrued liabilities. 
+          At current burn, you run out of cash August 14th.
+        </div>
+      </div>
+      <span class="card-label">Primary: Inter | Headings: 700 | Body: 400</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Brand Voice</h2>
+    <div class="card" style="align-items: flex-start; max-width: 600px;">
+      <div class="type-body">
+        <strong>Tagline:</strong> "Digits does your books. We make your decisions."<br><br>
+        <strong>Tone:</strong> Confident, direct, data-driven. Not salesy — like talking to a brilliant CFO who respects your time.<br><br>
+        <strong>Key phrases:</strong><br>
+        • "Same intelligence. 24/7. 90% less cost."<br>
+        • "A CFO that never sleeps."<br>
+        • "From books to boardrooms."
+      </div>
+    </div>
+  </div>
+</body>
+</html>
