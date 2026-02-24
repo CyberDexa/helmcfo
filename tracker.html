@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous CFO — Project Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c12;
+      --surface: #0e1420;
+      --surface-2: #141c2a;
+      --surface-3: #1a2234;
+      --border: rgba(99,130,186,0.12);
+      --border-hi: rgba(99,130,186,0.25);
+      --text: #e8edf5;
+      --text-2: #8b97b0;
+      --text-3: #4f5b72;
+      --accent: #3b82f6;
+      --accent-dim: rgba(59,130,246,0.15);
+      --accent-glow: rgba(59,130,246,0.06);
+      --green: #10b981;
+      --green-dim: rgba(16,185,129,0.15);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.15);
+      --red: #ef4444;
+      --red-dim: rgba(239,68,68,0.12);
+      --purple: #8b5cf6;
+      --purple-dim: rgba(139,92,246,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── BACKGROUND GRID ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 24px rgba(59,130,246,0.3);
+    }
+
+    .logo-icon svg { width: 20px; height: 20px; }
+
+    .brand-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-name span { color: var(--accent); }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(90deg, #60a5fa, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      color: var(--text-2);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+
+    .date-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      display: inline-block;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-1px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .stat-card.blue::before  { background: linear-gradient(90deg, #3b82f6, #818cf8); }
+    .stat-card.green::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .stat-card.amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .stat-card.red::before   { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-3);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text-2);
+      margin-top: 4px;
+    }
+
+    /* ── GLOBAL PROGRESS ── */
+    .global-progress {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 40px;
+    }
+
+    .gp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .gp-title {
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      color: var(--text-2);
+      text-transform: uppercase;
+    }
+
+    .gp-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #818cf8);
+      border-radius: 99px;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .phase-bars {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .phase-bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .phase-bar-label {
+      font-size: 10px;
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .phase-bar-track {
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .phase-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    /* ── PHASE SECTIONS ── */
+    .phase-section {
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .phase-section:hover { border-color: var(--border-hi); }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      background: var(--surface);
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+
+    .phase-header:hover { background: var(--surface-2); }
+
+    .phase-left { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+
+    .phase-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .phase-badge.p0 { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(139,92,246,0.2); }
+    .phase-badge.p1 { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(59,130,246,0.2); }
+    .phase-badge.p2 { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+    .phase-badge.p3 { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+    .phase-badge.p4 { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+
+    .phase-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .phase-subtitle {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    .phase-right { display: flex; align-items: center; gap: 12px; }
+
+    .phase-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    .phase-progress {
+      width: 80px;
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .phase-progress-fill { height: 100%; border-radius: 99px; }
+
+    .chevron {
+      color: var(--text-3);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .phase-section.open .chevron { transform: rotate(180deg); }
+
+    /* ── TASKS BODY ── */
+    .tasks-body {
+      display: none;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .phase-section.open .tasks-body { display: block; }
+
+    .task-group {
+      padding: 16px 24px;
+    }
+
+    .task-group + .task-group {
+      border-top: 1px solid var(--border);
+    }
+
+    .task-group-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 10px;
+      padding-left: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 9px 8px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .task-item:hover { background: var(--surface-2); }
+
+    .task-checkbox {
+      width: 17px;
+      height: 17px;
+      border-radius: 4px;
+      border: 1.5px solid var(--text-3);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: grid;
+      place-items: center;
+      transition: all 0.15s;
+    }
+
+    .task-item.done .task-checkbox {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .task-item.inprogress .task-checkbox {
+      background: transparent;
+      border-color: var(--accent);
+      position: relative;
+    }
+
+    .task-item.inprogress .task-checkbox::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .check-icon { display: none; }
+    .task-item.done .check-icon { display: block; }
+
+    .task-text {
+      font-size: 13.5px;
+      color: var(--text-2);
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .task-item.done .task-text {
+      color: var(--text-3);
+      text-decoration: line-through;
+      text-decoration-color: var(--text-3);
+    }
+
+    .task-item.inprogress .task-text { color: var(--text); }
+
+    .task-tag {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .tag-ai      { background: var(--purple-dim); color: var(--purple); }
+    .tag-infra   { background: var(--accent-dim); color: var(--accent); }
+    .tag-data    { background: var(--green-dim); color: var(--green); }
+    .tag-sec     { background: var(--red-dim); color: var(--red); }
+    .tag-gtm     { background: var(--amber-dim); color: var(--amber); }
+    .tag-ui      { background: rgba(20,184,166,0.15); color: #14b8a6; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div>
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 14l4-4 3 3 4-5 3 3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15.5" cy="4.5" r="2" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <span class="brand-name">Autonomous<span>CFO</span></span>
+      </div>
+      <h1>Project <em>Tracker</em></h1>
+      <p class="tagline">"Digits does your books. We make your decisions."</p>
+    </div>
+    <div class="header-meta">
+      <div class="date-badge" id="current-date">Loading...</div>
+    </div>
+  </header>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-card blue">
+      <div class="stat-label">Total Tasks</div>
+      <div class="stat-value" id="total-tasks">—</div>
+      <div class="stat-sub">across 5 phases</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Completed</div>
+      <div class="stat-value" id="completed-tasks">—</div>
+      <div class="stat-sub" id="completed-pct">0% done</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-value" id="inprogress-tasks">—</div>
+      <div class="stat-sub">active sprint</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Remaining</div>
+      <div class="stat-value" id="remaining-tasks">—</div>
+      <div class="stat-sub">to completion</div>
+    </div>
+  </div>
+
+  <!-- GLOBAL PROGRESS -->
+  <div class="global-progress">
+    <div class="gp-header">
+      <span class="gp-title">Overall Progress</span>
+      <span class="gp-pct" id="global-pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="global-bar" style="width: 0%"></div>
+    </div>
+    <div class="phase-bars" id="phase-bars"></div>
+  </div>
+
+  <!-- PHASES -->
+  <div id="phases-container"></div>
+
+  <footer>
+    Autonomous CFO — Internal Project Tracker · Last updated: <span id="footer-date">—</span>
+  </footer>
+</div>
+
+<script>
+const phases = [
+  {
+    id: 'p0',
+    badge: 'Phase 0',
+    label: 'p0',
+    title: 'Validation',
+    subtitle: 'Weeks 1–4 · Market research & design partners',
+    color: '#8b5cf6',
+    tasks: [
+      { text: 'Interview 30+ SMB founders/CEOs who currently use fractional CFOs or manage finances themselves', tag: 'gtm', status: 'todo' },
+      { text: 'Validate the "10x moment" — does instant cash flow diagnosis + actionable recs generate "holy shit" reactions?', tag: 'gtm', status: 'todo' },
+      { text: 'Identify 5 design partners willing to share financial data for beta', tag: 'gtm', status: 'inprogress' },
+      { text: 'Map the minimum integration set (QBO + Plaid + Stripe = enough for MVP?)', tag: 'data', status: 'done' },
+      { text: 'Define MVP scope: which 3–5 of the 15 use cases ship first?', tag: 'infra', status: 'done' },
+    ]
+  },
+  {
+    id: 'p1',
+    badge: 'Phase 1',
+    label: 'p1',
+    title: 'MVP Build',
+    subtitle: 'Weeks 5–16 · Core product construction',
+    color: '#3b82f6',
+    tasks: [
+      { text: 'Set up project infrastructure (repo, CI/CD, cloud, monitoring)', tag: 'infra', status: 'done' },
+      { text: 'Build data ingestion layer (Plaid + QBO + Stripe integrations)', tag: 'data', status: 'done' },
+      { text: 'Build canonical financial data model & normalization layer', tag: 'data', status: 'done' },
+      { text: 'Build deterministic financial computation engine (cash flow forecast, burn rate, runway)', tag: 'data', status: 'done' },
+      { text: 'Build AI orchestrator agent + analysis agent + recommendation agent', tag: 'ai', status: 'done' },
+      { text: 'Build frontend — dashboard + chat interface + report generation', tag: 'ui', status: 'done' },
+      { text: 'Security foundations (encryption, auth, audit logging, tenant isolation)', tag: 'sec', status: 'done' },
+      { text: 'Deploy to 5 design partners for feedback', tag: 'gtm', status: 'inprogress' },
+    ]
+  },
+  {
+    id: 'p2',
+    badge: 'Phase 2',
+    label: 'p2',
+    title: 'Beta & PMF',
+    subtitle: 'Weeks 17–30 · Iteration & validation',
+    color: '#10b981',
+    tasks: [
+      { text: 'Iterate on product based on design partner feedback', tag: 'ui', status: 'todo' },
+      { text: 'Expand to 50 beta customers', tag: 'gtm', status: 'todo' },
+      { text: 'Add payroll integration (Finch) for headcount planning', tag: 'data', status: 'done' },
+      { text: 'Add board/investor report generation', tag: 'ai', status: 'done' },
+      { text: 'Add scenario planning (base/bull/bear)', tag: 'ai', status: 'done' },
+      { text: 'Begin SOC 2 Type II preparation — controls framework built (9 controls, AICPA TSC)', tag: 'sec', status: 'done' },
+      { text: 'Measure activation, retention, NPS — validate PMF signals', tag: 'gtm', status: 'todo' },
+      { text: 'Develop pricing page and self-serve onboarding', tag: 'ui', status: 'done' },
+    ]
+  },
+  {
+    id: 'p3',
+    badge: 'Phase 3',
+    label: 'p3',
+    title: 'Launch & Series A',
+    subtitle: 'Weeks 31–52 · Go to market & fundraise',
+    color: '#f59e0b',
+    tasks: [
+      { text: 'Public launch — marketing homepage, waitlist API, route architecture (app vs. marketing split)', tag: 'gtm', status: 'done' },
+      { text: 'VC portfolio distribution — /partners/vc program page + partner application API', tag: 'gtm', status: 'done' },
+      { text: 'Accounting firm partner program — /partners/accounting page + partner application API', tag: 'gtm', status: 'done' },
+      { text: 'Content marketing engine — blog with 3 SEO articles at /blog/[slug] with generateStaticParams', tag: 'gtm', status: 'done' },
+      { text: 'Rate limiter utility (sliding window, presets for AI/auth/webhook/form endpoints)', tag: 'sec', status: 'done' },
+      { text: 'Analytics event tracking library + /api/analytics/track ingestion endpoint', tag: 'infra', status: 'done' },
+      { text: 'SOC 2 Type II controls framework (9 controls, AICPA TSC mapping, evidence collection API)', tag: 'sec', status: 'done' },
+      { text: 'Investor data room at /investors (ARR metrics, Series A ask, unit economics)', tag: 'gtm', status: 'done' },
+      { text: 'List on QuickBooks App Store & Stripe Partner Directory', tag: 'gtm', status: 'inprogress' },
+      { text: 'Sign 10–20 VC fund partnerships (outreach)', tag: 'gtm', status: 'inprogress' },
+      { text: 'Scale to 200 paying customers', tag: 'gtm', status: 'inprogress' },
+      { text: 'Complete SOC 2 Type II audit & receive certification', tag: 'sec', status: 'todo' },
+      { text: 'Raise Series A ($8–15M at $40–60M valuation)', tag: 'gtm', status: 'inprogress' },
+    ]
+  },
+  {
+    id: 'p4',
+    badge: 'Phase 4',
+    label: 'p4',
+    title: 'Growth & Expansion',
+    subtitle: 'Year 2+ · Scale & embed finance',
+    color: '#ef4444',
+    tasks: [
+      { text: 'Expense optimization & vendor renegotiation — AI-powered SaaS audit, vendor analysis, savings recommendations', tag: 'ai', status: 'done' },
+      { text: 'Embedded lending referral program — match companies to Arc/Clearco/SVB/Pipe based on financials', tag: 'gtm', status: 'done' },
+      { text: 'Xero integration — OAuth2 + tenant sync, accounting data normalization alongside QBO', tag: 'data', status: 'done' },
+      { text: 'Anonymized benchmarking dataset — cross-customer SaaS metrics, burn multiples, growth rates', tag: 'ai', status: 'done' },
+      { text: 'Tax optimization & R&D credit calculator — eligibility screening, savings estimator, CPA referral', tag: 'ai', status: 'done' },
+      { text: 'Scale to 800+ customers, $6M+ ARR', tag: 'gtm', status: 'todo' },
+      { text: 'Raise Series B', tag: 'gtm', status: 'todo' },
+    ]
+  }
+];
+
+const tagMap = {
+  ai: 'tag-ai',
+  infra: 'tag-infra',
+  data: 'tag-data',
+  sec: 'tag-sec',
+  gtm: 'tag-gtm',
+  ui: 'tag-ui',
+};
+
+function countTasks(tasks) {
+  return {
+    total: tasks.length,
+    done: tasks.filter(t => t.status === 'done').length,
+    inprogress: tasks.filter(t => t.status === 'inprogress').length,
+    todo: tasks.filter(t => t.status === 'todo').length,
+  };
+}
+
+function buildPhaseHTML(phase, index) {
+  const counts = countTasks(phase.tasks);
+  const pct = counts.total ? Math.round((counts.done / counts.total) * 100) : 0;
+
+  const tasksHTML = phase.tasks.map((task, i) => `
+    <div class="task-item ${task.status === 'done' ? 'done' : task.status === 'inprogress' ? 'inprogress' : ''}"
+         data-phase="${phase.id}" data-task="${i}" onclick="toggleTask('${phase.id}', ${i})">
+      <div class="task-checkbox">
+        <svg class="check-icon" width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M1.5 5.5L4 8l5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-text">${task.text}</div>
+      <div class="task-tag ${tagMap[task.tag] || ''}">${task.tag}</div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="phase-section" id="section-${phase.id}" ${index === 0 ? 'class="phase-section open"' : ''}>
+      <div class="phase-header" onclick="togglePhase('${phase.id}')">
+        <div class="phase-left">
+          <div class="phase-badge ${phase.label}">${phase.badge}</div>
+          <div>
+            <div class="phase-title">${phase.title}</div>
+            <div class="phase-subtitle">${phase.subtitle}</div>
+          </div>
+        </div>
+        <div class="phase-right">
+          <span class="phase-count">${counts.done}/${counts.total}</span>
+          <div class="phase-progress">
+            <div class="phase-progress-fill" style="width: ${pct}%; background: ${phase.color};"></div>
+          </div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tasks-body">
+        <div class="task-group">${tasksHTML}</div>
+      </div>
+    </div>
+  `;
+}
+
+function buildPhaseBars() {
+  return phases.map(phase => {
+    const counts = countTasks(phase.tasks);
+    const pct = counts.total ? Math.round((counts.done / counts.total) * 100) : 0;
+    return `
+      <div class="phase-bar-item">
+        <span class="phase-bar-label">${phase.badge}</span>
+        <div class="phase-bar-track">
+          <div class="phase-bar-fill" style="width: ${pct}%; background: ${phase.color};"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateStats() {
+  let total = 0, done = 0, inprogress = 0;
+  phases.forEach(p => {
+    p.tasks.forEach(t => {
+      total++;
+      if (t.status === 'done') done++;
+      if (t.status === 'inprogress') inprogress++;
+    });
+  });
+
+  document.getElementById('total-tasks').textContent = total;
+  document.getElementById('completed-tasks').textContent = done;
+  document.getElementById('inprogress-tasks').textContent = inprogress;
+  document.getElementById('remaining-tasks').textContent = total - done;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('completed-pct').textContent = `${pct}% done`;
+  document.getElementById('global-pct').textContent = `${pct}%`;
+  document.getElementById('global-bar').style.width = `${pct}%`;
+}
+
+function updatePhaseBar(phaseId) {
+  const phase = phases.find(p => p.id === phaseId);
+  if (!phase) return;
+  const counts = countTasks(phase.tasks);
+  const pct = counts.total ? Math.round((counts.done / counts.total) * 100) : 0;
+  // update inline section bar
+  const section = document.getElementById(`section-${phaseId}`);
+  const fill = section.querySelector('.phase-progress-fill');
+  if (fill) fill.style.width = `${pct}%`;
+  const count = section.querySelector('.phase-count');
+  if (count) count.textContent = `${counts.done}/${counts.total}`;
+  // re-render mini bars
+  document.getElementById('phase-bars').innerHTML = buildPhaseBars();
+}
+
+function togglePhase(phaseId) {
+  const section = document.getElementById(`section-${phaseId}`);
+  section.classList.toggle('open');
+}
+
+function toggleTask(phaseId, taskIndex) {
+  const phase = phases.find(p => p.id === phaseId);
+  if (!phase) return;
+  const task = phase.tasks[taskIndex];
+  const cycle = { todo: 'inprogress', inprogress: 'done', done: 'todo' };
+  task.status = cycle[task.status] || 'todo';
+
+  const items = document.querySelectorAll(`[data-phase="${phaseId}"][data-task="${taskIndex}"]`);
+  items.forEach(item => {
+    item.className = `task-item${task.status === 'done' ? ' done' : task.status === 'inprogress' ? ' inprogress' : ''}`;
+  });
+
+  updateStats();
+  updatePhaseBar(phaseId);
+}
+
+// ── INIT ──
+const container = document.getElementById('phases-container');
+phases.forEach((phase, i) => {
+  container.innerHTML += buildPhaseHTML(phase, i);
+});
+
+// Open first section
+document.getElementById('section-p0').classList.add('open');
+
+document.getElementById('phase-bars').innerHTML = buildPhaseBars();
+updateStats();
+
+// Dates
+const now = new Date();
+const formatted = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+document.getElementById('current-date').textContent = formatted;
+document.getElementById('footer-date').textContent = formatted;
+</script>
+</body>
+</html>

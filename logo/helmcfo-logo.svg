@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160">
+  <defs>
+    <!-- Main gradient for the icon -->
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    <!-- Subtle glow for the icon bg -->
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+    </radialGradient>
+    <!-- Text gradient -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e8edf5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
+    </linearGradient>
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#3b82f6" flood-opacity="0.3"/>
+    </filter>
+    <!-- Icon glow filter -->
+    <filter id="iconGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Dark background (use transparent for flexibility) -->
+  <rect width="480" height="160" fill="#080c12" rx="16"/>
+
+  <!-- Ambient glow behind icon -->
+  <circle cx="80" cy="80" r="60" fill="url(#glowGrad)"/>
+
+  <!-- ── ICON CONTAINER ── -->
+  <rect x="36" y="36" width="88" height="88" rx="20" fill="url(#iconGrad)" filter="url(#shadow)"/>
+
+  <!-- ── HELM / STEERING MARK ── (stylized navigation wheel abstracted as financial chart) -->
+  <!-- Center hub -->
+  <circle cx="80" cy="80" r="8" fill="white" opacity="0.95"/>
+  <circle cx="80" cy="80" r="4" fill="#1d4ed8"/>
+
+  <!-- Center ring -->
+  <circle cx="80" cy="80" r="22" fill="none" stroke="white" stroke-width="2.5" stroke-opacity="0.9"/>
+
+  <!-- Spokes (6 spokes = precision, symmetry; angles: 0, 60, 120, 180, 240, 300) -->
+  <!-- Spoke handles with rounded tips -->
+  <line x1="80" y1="50" x2="80" y2="38" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+  <line x1="80" y1="110" x2="80" y2="122" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+  <line x1="103.6" y1="57" x2="111.4" y2="43.2" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+  <line x1="56.4" y1="103" x2="48.6" y2="116.8" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+  <line x1="103.6" y1="103" x2="111.4" y2="116.8" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+  <line x1="56.4" y1="57" x2="48.6" y2="43.2" stroke="white" stroke-width="3" stroke-linecap="round" stroke-opacity="0.95"/>
+
+  <!-- Outer rim (partial arc at top with a notch suggesting direction / north) -->
+  <circle cx="80" cy="80" r="34" fill="none" stroke="white" stroke-width="2" stroke-opacity="0.5"
+    stroke-dasharray="8 4" stroke-dashoffset="0"/>
+
+  <!-- Small upward arrow inside hub (forward motion / decisions) -->
+  <path d="M80 76 L76 83 L80 81 L84 83 Z" fill="white" opacity="0.8"/>
+
+  <!-- ── WORDMARK ── -->
+  <!-- "HELM" bold -->
+  <text x="146" y="76"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="38"
+    font-weight="700"
+    letter-spacing="-1"
+    fill="url(#textGrad)">HELM</text>
+
+  <!-- "CFO" superscript-style badge -->
+  <rect x="277" y="49" width="46" height="22" rx="5" fill="#1d4ed8" opacity="0.8"/>
+  <text x="300" y="65"
+    font-family="'Courier New', monospace"
+    font-size="13"
+    font-weight="600"
+    text-anchor="middle"
+    fill="#93c5fd"
+    letter-spacing="1">CFO</text>
+
+  <!-- Divider line -->
+  <line x1="146" y1="85" x2="334" y2="85" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- Tagline -->
+  <text x="146" y="105"
+    font-family="'Courier New', Courier, monospace"
+    font-size="11.5"
+    fill="#4f7aad"
+    letter-spacing="1.5">AI DECISION ENGINE FOR SMBs</text>
+
+  <!-- Small accent dot -->
+  <circle cx="146" cy="118" r="2.5" fill="#3b82f6" opacity="0.7"/>
+  <circle cx="154" cy="118" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="162" cy="118" r="2.5" fill="#3b82f6" opacity="0.2"/>
+</svg>
